@@ -2,6 +2,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+
+#Code added by Carlos (MCC statistic)
+def get_mcc(cm):
+	"""Function used to obtain the Mathew's correlation."""
+	n = cm[0,0]*cm[1,1]-cm[0,1]*cm[1,0]
+	d = np.sqrt((cm[0,0]+cm[0,1])*(cm[0,0]+cm[1,0])*(cm[1,1]+cm[0,1])*(cm[1,1]+cm[1,0]))
+	return n/d
+
+
 def make_confusion_matrix(cf,
                           group_names=None,
                           categories='auto',
@@ -46,8 +55,7 @@ def make_confusion_matrix(cf,
     title:         Title for the heatmap. Default is None.
 
     '''
-
-
+    
     # CODE TO GENERATE TEXT INSIDE EACH SQUARE
     blanks = ['' for i in range(cf.size)]
 
@@ -81,8 +89,9 @@ def make_confusion_matrix(cf,
             precision = cf[1,1] / sum(cf[:,1])
             recall    = cf[1,1] / sum(cf[1,:])
             f1_score  = 2*precision*recall / (precision + recall)
-            stats_text = "\n\nAccuracy={:0.3f}\nPrecision={:0.3f}\nRecall={:0.3f}\nF1 Score={:0.3f}".format(
-                accuracy,precision,recall,f1_score)
+            mcc = get_mcc(cf)
+            stats_text = "\n\nAccuracy={:0.3f}\nPrecision={:0.3f}\nRecall={:0.3f}\nF1 Score={:0.3f}\nMathew\'s Correlation={:0.3f}".format(
+                accuracy,precision,recall,f1_score,mcc)
         else:
             stats_text = "\n\nAccuracy={:0.3f}".format(accuracy)
     else:
