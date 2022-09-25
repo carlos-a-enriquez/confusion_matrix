@@ -88,8 +88,14 @@ def make_confusion_matrix(cf,
         #if it is a binary confusion matrix, show some more stats
         if len(cf)==2:
             #Metrics for Binary Confusion Matrices
-            precision = cf[1,1] / sum(cf[:,1])
-            recall    = cf[1,1] / sum(cf[1,:])
+            Pos = sum(cf[:,1]) #Actual positives
+            PrePos = sum(cf[1,:]) #Predicted positives
+            if Pos == 0:
+				Pos = np.nan
+			if PrePos == 0:
+				PrePos = np.nan
+			precision = cf[1,1] / Pos
+			recall    = cf[1,1] / PrePos
             f1_score  = 2*precision*recall / (precision + recall)
             mcc = get_mcc(cf)
             stats_text = "\n\nAccuracy={:0.3f}\nPrecision={:0.3f}\nRecall={:0.3f}\nF1 Score={:0.3f}\nMathew\'s Correlation={:0.3f}".format(
