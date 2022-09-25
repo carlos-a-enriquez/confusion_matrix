@@ -8,6 +8,8 @@ def get_mcc(cm):
 	"""Function used to obtain the Mathew's correlation."""
 	n = cm[0,0]*cm[1,1]-cm[0,1]*cm[1,0]
 	d = np.sqrt((cm[0,0]+cm[0,1])*(cm[0,0]+cm[1,0])*(cm[1,1]+cm[0,1])*(cm[1,1]+cm[1,0]))
+	if d ==0: #avoid division by 0
+		d = 1
 	return n/d
 
 
